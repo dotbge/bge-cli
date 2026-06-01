@@ -8,18 +8,24 @@ iOS. Same files, same keys, same open format — now in your terminal and your s
 
 ## Install (macOS)
 
-Grab the latest signed, notarized build from [**Releases**](../../releases/latest):
+**Homebrew** (recommended):
 
-- **`bge-<version>.pkg`** — double-click to install `bge` (and its man page) into your
-  `PATH` at `/usr/local/bin`. Universal binary — Apple Silicon **and** Intel.
+```bash
+brew install --cask dotbge/tap/bge
+```
+
+Or download a signed, notarized build from [**Releases**](../../releases/latest):
+
+- **`bge-<version>.pkg`** — double-click to install `bge` (+ man page) into `/usr/local/bin`.
+- **`bge-<version>-macos-universal.zip`** — the standalone universal binary.
+
+Either way it's a universal binary (Apple Silicon **and** Intel), signed with an Apple
+Developer ID and notarized, so it runs without Gatekeeper warnings.
 
 ```bash
 bge --version
 man bge
 ```
-
-> The `.pkg` is signed with an Apple Developer ID and notarized by Apple, so it installs
-> without Gatekeeper warnings. A standalone universal binary is also attached as a `.zip`.
 
 ## Quick start
 
