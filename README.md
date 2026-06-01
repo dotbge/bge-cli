@@ -27,6 +27,20 @@ bge --version
 man bge
 ```
 
+## Install (Linux)
+
+Download the tarball for your architecture from [**Releases**](../../releases/latest), then
+put `bge` on your `PATH`:
+
+```bash
+tar xzf bge-<version>-linux-x86_64.tar.gz          # or -aarch64
+sudo install bge-<version>-linux-x86_64/bge /usr/local/bin/bge
+bge --version
+```
+
+The Linux binary statically links the Swift runtime, so it runs on any recent glibc-based
+distro — **no Swift install required**. Verify with `sha256sum -c SHA256SUMS-linux`.
+
 ## Quick start
 
 ```bash
