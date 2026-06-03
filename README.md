@@ -3,7 +3,7 @@
 **Encrypt files and folders with someone's key or a password.**
 An open `.bge` format — RSA-4096 + AES-256-GCM, no servers, no lock-in.
 
-`bge` is the command-line companion to the [dotbge](https://dotbge.com) apps for macOS and
+`bge` is the command-line companion to the [DotBGE](https://dotbge.com) apps for macOS and
 iOS. Same files, same keys, same open format — now in your terminal and your scripts.
 
 ## Install (macOS)
@@ -59,8 +59,14 @@ bge encrypt report.pdf -p                  # prompts for a passphrase
 # Peek at a .bge without decrypting it (add -k/-p to reveal the original filename & type)
 bge inspect report.pdf.bge
 
-# Hand out your public key as a contact card the dotbge apps import
+# Hand out your public key as a contact card the DotBGE apps import
 bge card alice.pub.pem -n "Alice"          # → Alice.bgekey
+
+# Save a contact and encrypt by name (address book lives in ~/.bge)
+bge contact add alice.pub.pem -n Alice     # then: bge encrypt report.pdf -r Alice
+
+# Bundle several files into one encrypted archive
+bge encrypt report.pdf notes.txt -a -r Alice -o bundle.bge
 ```
 
 Run `bge -h`, or `bge <command> -h`, for every option. `enc` / `dec` are aliases for
@@ -71,11 +77,32 @@ Run `bge -h`, or `bge <command> -h`, for every option. `enc` / `dec` are aliases
 - **Two ways to lock a file** — to a person (RSA-4096 identity) or a passphrase
   (PBKDF2-SHA512). Either way, content is sealed with AES-256-GCM.
 - **Files _and_ folders** — a single file, a mirrored tree of `.bge` files, or one zipped
-  archive (`-a`).
+  archive (`-a`) of a folder or a list of files.
+- **Encrypt by name** — save contacts and your own identities (`bge contact` / `bge identity`,
+  public keys only, in `~/.bge`) and encrypt with `-r <name>`, or bare for yourself.
 - **Interops with the apps** — `.bge` files and `.bgekey` identity cards round-trip with the
-  dotbge apps for macOS & iOS.
+  DotBGE apps for macOS & iOS.
 - **Built for scripts** — stdin/stdout piping (`-`), `--password-stdin`, and distinct
   [`sysexits`](https://man.openbsd.org/sysexits.3) exit codes.
+
+## Use with Claude Code / AI agents
+
+This repo ships a [Claude Code](https://claude.com/claude-code) **skill** in
+[`skills/bge-encryption/`](skills/bge-encryption/SKILL.md) that teaches an agent how to drive
+`bge` — the commands, RSA vs. password modes, the address book (encrypt by name / to self),
+multi-file archive, non-interactive usage (`--password-stdin`), and the `sysexits` exit codes.
+Install it so Claude can encrypt/decrypt for you:
+
+```bash
+# Personal (all projects):
+mkdir -p ~/.claude/skills && cp -r skills/bge-encryption ~/.claude/skills/
+
+# …or per-project (checked into a repo):
+mkdir -p .claude/skills && cp -r skills/bge-encryption .claude/skills/
+```
+
+Then just ask, e.g. *"encrypt report.pdf for Alice"* — the skill loads on its own. It assumes
+`bge` is already on your `PATH` (install it first, above).
 
 ## The format is open
 
@@ -91,4 +118,4 @@ shasum -a 256 -c SHA256SUMS
 
 ---
 
-© dotbge · [dotbge.com](https://dotbge.com)
+© DotBGE · [dotbge.com](https://dotbge.com)
